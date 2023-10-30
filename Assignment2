@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Vega-Lite Bar Chart</title>
+    <meta charset="utf-8" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.25.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.22.2"></script>
+
+    <style media="screen">
+      /* Add space between Vega-Embed links  */
+      .vega-actions a {
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Template for Embedding Vega-Lite Visualization</h1>
+    <!-- Container for the visualization -->
+    <div id="vis"></div>
+
+    <script>
+      // Assign the specification to a local variable vlSpec.
+      var vlSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "data": {"url": "https://raw.githubusercontent.com/iknoway/Vega_Lite/main/HW_Excel.csv" ,"format": {"type": "csv"}},
+        "hconcat": [
+        {
+            "mark": {"type": "bar", "cornerRadius": 9, "color": "orange"},
+            "encoding": {
+                            "x": {
+                                "field": "Rep",
+                                "type": "nominal",
+                                "sort": "-y"
+                                
+                            },
+                            "y": {
+                                "aggregate": "sum",
+                                "field": "Total",
+                                "type": "quantitative",
+                                "title": "Total"
+                            }
+             }
+         },
+         
+         {
+            "mark": "circle",
+            "encoding": {
+                            "x": {
+                                    "field": "Units",
+                                    "type": "quantitative"
+                            },
+                            "y": {
+                                    "field": "Unit Cost",
+                                    "type": "quantitative"
+                            },
+                            "color": {"field": "Item", "type": "nominal"}
+            }        
+         },
+         {
+            "mark": {"type": "line", "color": "green"},
+            "encoding": {
+                            "x": { "field": "OrderDate", "type": "temporal"},
+                            "y": {"field": "Total", "type": "quantitative"}
+            }
+         },
+         {
+         "layer": [
+            {
+                "mark": {"type": "bar", "cornerRadius": 9, "binSpacing": 0, "color": "skyblue"},
+                "encoding": {
+                                "x": {
+                                   "bin": true,
+                                   "field": "Units"
+                                },
+                                "y": {"aggregate": "count"}
+                }
+            },
+            {
+                "mark": "rule",
+                "encoding": {
+                                "x": {
+                                    "aggregate": "mean",
+                                    "field": "Units",
+                                    "type": "quantitative"
+                                },
+                                "color": {"value": "red"},
+                                "size": {"value": 3}
+                }
+            }
+         ]
+         },
+         {
+            "mark": {"type": "arc", "tooltip": true},
+            "encoding": {
+                            "theta": {"aggregate": "sum" ,"field": "Units", "type": "quantitative", "stack": "normalize"},
+                            "color": {"field": "Item", "type": "nominal"}
+            }
+         }
+       ]
+      };
+
+      // Embed the visualization in the container with id `vis`
+      vegaEmbed('#vis', vlSpec);
+    </script>
+  </body>
+</html>
